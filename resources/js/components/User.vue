@@ -55,14 +55,49 @@
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Create</button>
-                        </div>
-                    </div>
+                          <form @submit.prevent="createUser">
+                          <div class="modal-body">                          
+                            <div class="form-group">
+                              <input v-model="form.name" type="text" name="name"
+                                placeholder="Name"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                              <has-error :form="form" field="name"></has-error>
+                            </div>
+                            <div class="form-group">
+                              <input v-model="form.email" type="email" name="email"
+                                placeholder="Email"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                              <has-error :form="form" field="email"></has-error>
+                            </div>
+                            <div class="form-group">
+                              <input v-model="form.password" type="password" name="password"
+                                placeholder="Password"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                              <has-error :form="form" field="password"></has-error>
+                            </div>
+                            <div class="form-group">
+                              <input v-model="form.bio" type="bio" name="bio"
+                                placeholder="User Shot Bio(Optional)"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }">
+                              <has-error :form="form" field="bio"></has-error>
+                            </div>                          
+                            <div class="form-group">
+                              <select v-model="form.type" type="type" name="type"                            
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+                                  <option value="">Select Role</option>
+                                  <option value="admin">Admin</option>
+                                  <option value="user">User</option>
+                                  <option value="author">Author</option>
+                              <has-error :form="form" field="type"></has-error>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Create</button>
+                          </div>
+                       </form>
+                  </div>
                 </div>
             </div>
         </div>
@@ -70,6 +105,23 @@
 
 <script>
     export default {
+          data() {
+                return {
+                  form: new Form({
+                      name: '',
+                      email: '',
+                      password: '',
+                      type: '',
+                      bio: '',
+                      photo: ''
+                  })
+                }
+          },
+          methods: {
+              createUser() {
+                this.form.post('api/user');
+              }
+          },
         mounted() {
             console.log('Component mounted.')
         }
